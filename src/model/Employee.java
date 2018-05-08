@@ -16,8 +16,8 @@ import java.util.Date;
 //Annotations for include a root in the out of WS
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="employee")
-public class Employee
-{		
+public class Employee {		
+	
 	private int keyEmployee;
     private String name;
     private String lastName;    
@@ -40,11 +40,7 @@ public class Employee
 		objC = new Connect();
 		conn = objC.getConn();
 			
-		String query = "INSERT INTO employee (name, lastname, borndate, email, phone, rfc, "
-				+ ""
-				+ ""
-				+ ""
-				+ ", entryDate, keyuser)"
+		String query = "INSERT INTO employee (name, lastname, borndate, email, phone, rfc, entryDate, keyuser)"
 				+ " values ('"+name+"', '"+lastName+"', '"+bornDate+"', '"+email+"','"+phone+"','"+RFC+"','"+photo+"' ,'"+entryDate+"',"+keyUser+")";
 		try
 		{					
@@ -62,8 +58,8 @@ public class Employee
 		objC = new Connect();
 		conn = objC.getConn();
 				
-		String query = "UPDATE employee SET name = '"+name+"',"
-				+ "lastname = '"+lastName+"', borndate = '"+bornDate+"', email = '"+email+"',"
+		String query = "UPDATE employee SET name = '"+name+"', lastname = '"+lastName+"', "
+				+ "borndate = '"+bornDate+"', email = '"+email+"',"
 				+ "phone = '"+phone+"', rfc = '"+RFC+"', entrydate = '"+entryDate+"' "
 				+ "WHERE keyemployee = "+keyEmployee;
 		try

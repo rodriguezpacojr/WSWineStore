@@ -16,9 +16,9 @@ import java.util.ArrayList;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="product")
 
-public class Product
-{	
-    private int keyProduct;
+public class Product {	
+    
+	private int keyProduct;
     private String name;
     private double ml;
     private String color;
@@ -33,9 +33,8 @@ public class Product
     private Connection conn;
     private Connect objC;	    
 
-		//==========================METHODS===========================================
-	public void insertProduct() 
-	{
+	//==========================METHODS===========================================
+	public void insertProduct() {
 		objC = new Connect();
 		conn = objC.getConn();
 			
@@ -52,8 +51,7 @@ public class Product
 		}
 	}
 	
-	public void updateProduct() 
-	{
+	public void updateProduct() {
 		objC = new Connect();
 		conn = objC.getConn();
 				
@@ -61,8 +59,7 @@ public class Product
 				+ "color = '"+color+"', taste = '"+taste+"', stock = "+stock+", "
 				+ "salesprice = "+salesPrice+", keytypeproduct = "+keyTypeProduct+" "								
 				+ "WHERE keyproduct = "+keyProduct;
-		try
-		{						
+		try {						
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(query);
 			conn.close();
@@ -71,12 +68,10 @@ public class Product
 		}
 	}
 	
-	public void deleteProduct() 
-	{
+	public void deleteProduct() {
 		objC = new Connect();
 		conn = objC.getConn();
-		try 
-		{
+		try {
 			String query = "DELETE FROM product WHERE keyproduct = "+keyProduct;
 			
 			Statement stmt = conn.createStatement();
@@ -85,23 +80,20 @@ public class Product
 		} catch (Exception e) {}
 	}
 		
-	public List<Product> listProducts()
-	{
+	public List<Product> listProducts() {
 		Product objPro;
 		ArrayList<Product> arrPro = new ArrayList<Product>();
 
 		objC = new Connect();
 		conn = objC.getConn();
 		
-		try
-		{
+		try {
 			String query = "SELECT p.*, tp.name as tp FROM product p JOIN type_product tp USING (keytypeproduct) order by 1";			
 			Statement stmt = conn.createStatement();
 			ResultSet res = stmt.executeQuery(query);
 			
 			//Convert all registers from query to objects
-			while(res.next())
-			{
+			while(res.next()) {
 				objPro = new Product();
 				objPro.keyProduct = res.getInt("keyproduct");
 				objPro.name = res.getString("name");				
@@ -115,17 +107,14 @@ public class Product
 			}
 			conn.close();
 		}
-		catch(Exception e)
-		{
+		catch(Exception e) {
 
 		}
 		return arrPro;
 	}
 	
-	public void getObjProduct(int keyproduct)
-	{
-		try
-		{
+	public void getObjProduct(int keyproduct) {
+		try {
 			objC = new Connect();
 			conn = objC.getConn();
 			
@@ -134,8 +123,7 @@ public class Product
 			ResultSet res = stmt.executeQuery(query);
 			
 			//Convert all registers from query to objects
-			while(res.next())
-			{
+			while(res.next()) {
 				TypeProduct objTP = new TypeProduct();
 				objTP.getObjTypeProduct(res.getInt("keytypeproduct"));
 				
@@ -149,8 +137,7 @@ public class Product
 			}
 			conn.close();
 		}
-		catch(Exception e)
-		{
+		catch(Exception e) {
 			
 		}
 	}

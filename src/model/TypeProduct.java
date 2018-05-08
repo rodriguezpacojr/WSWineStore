@@ -16,25 +16,23 @@ import java.util.ArrayList;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="typeproduct")
 
-public class TypeProduct
-{	
-    private int keyTypeProduct;
+public class TypeProduct {	
+    
+	private int keyTypeProduct;
     private String name;     
     
     private Connection conn;
     private Connect objC;
 	    
 
-		//==========================METHODS===========================================
-	public void insertTypeProduct() 
-	{
+	//==========================METHODS===========================================
+	public void insertTypeProduct() {
 		objC = new Connect();
 		conn = objC.getConn();
 			
 		String query = "INSERT INTO type_product (name)"
 				+ " values ('"+name+"')";
-		try
-		{					
+		try {					
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(query);
 			conn.close();
@@ -44,14 +42,12 @@ public class TypeProduct
 		}
 	}
 	
-	public void updateTypeProduct() 
-	{
+	public void updateTypeProduct() {
 		objC = new Connect();
 		conn = objC.getConn();
 				
 		String query = "UPDATE type_product SET name = '"+name+"' WHERE keytypeproduct = "+keyTypeProduct;
-		try
-		{						
+		try {						
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(query);
 			conn.close();
@@ -60,12 +56,10 @@ public class TypeProduct
 		}
 	}
 	
-	public void deleteTypeProduct() 
-	{
+	public void deleteTypeProduct() {
 		objC = new Connect();
 		conn = objC.getConn();
-		try 
-		{
+		try {
 			String query = "DELETE FROM type_product WHERE keytypeproduct = "+keyTypeProduct;
 			
 			Statement stmt = conn.createStatement();
@@ -74,23 +68,20 @@ public class TypeProduct
 		} catch (Exception e) {}
 	}
 		
-	public List<TypeProduct> listTypeProducts()
-	{
+	public List<TypeProduct> listTypeProducts() {
 		TypeProduct objCou;
 		ArrayList<TypeProduct> arrCou = new ArrayList<TypeProduct>();
 
 		objC = new Connect();
 		conn = objC.getConn();
 		
-		try
-		{
+		try {
 			String query = "SELECT * FROM type_product order by 1";			
 			Statement stmt = conn.createStatement();
 			ResultSet res = stmt.executeQuery(query);
 			
 			//Convert all registers from query to objects
-			while(res.next())
-			{
+			while(res.next()) {
 				objCou = new TypeProduct();
 				objCou.keyTypeProduct = res.getInt("keytypeproduct");
 				objCou.name= res.getString("name");											
@@ -98,17 +89,14 @@ public class TypeProduct
 			}
 			conn.close();
 		}
-		catch(Exception e)
-		{
+		catch(Exception e) {
 
 		}
 		return arrCou;
 	}
 	
-	public void getObjTypeProduct(int keytypeproduct)
-	{
-		try
-		{
+	public void getObjTypeProduct(int keytypeproduct) {
+		try {
 			objC = new Connect();
 			conn = objC.getConn();
 			
@@ -124,8 +112,7 @@ public class TypeProduct
 			}
 			conn.close();
 		}
-		catch(Exception e)
-		{
+		catch(Exception e) {
 			
 		}
 	}

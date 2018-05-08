@@ -17,9 +17,9 @@ import java.util.ArrayList;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="order")
 
-public class Order
-{	
-    private int keyOrder;
+public class Order {	
+    
+	private int keyOrder;
     private Date orderDate;
             
     private int keyCustomer;
@@ -32,43 +32,37 @@ public class Order
     private Connect objC;
 	    
     
-    	//==========================METHODS===========================================
-	public void insertOrder() 
-	{
+	//==========================METHODS===========================================
+	public void insertOrder() {
 		objC = new Connect();
 		conn = objC.getConn();
 					
-		try
-		{	
+		try {	
 			String query = "INSERT INTO orders (keyorder, orderdate, keycustomer, keyemployee)"
 					+ " values ("+keyOrder+", '"+orderDate+"',"+keyCustomer+", "+keyEmployee+")";
 			
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(query);
 			conn.close();
-		}catch(Exception e) 
-		{						
+		}catch(Exception e) {						
 		}
 	}
 		
 		
-	public List<Order> listOrders()
-	{
+	public List<Order> listOrders() {
 		Order objO;
 		ArrayList<Order> arrOr = new ArrayList<Order>();
 
 		objC = new Connect();
 		conn = objC.getConn();
 		
-		try
-		{
+		try {
 			String query = "SELECT * FROM orders";			
 			Statement stmt = conn.createStatement();
 			ResultSet res = stmt.executeQuery(query);
 			
 			//Convert all registers from query to objects
-			while(res.next())
-			{
+			while(res.next()) {
 				Customer objCu = new Customer(); 
 				Employee objEm = new Employee();
 												
@@ -83,8 +77,7 @@ public class Order
 			}
 			conn.close();
 		}
-		catch(Exception e)
-		{
+		catch(Exception e) {
 
 		}
 		return arrOr;
