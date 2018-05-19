@@ -23,10 +23,8 @@ public class Order {
     private Date orderDate;
             
     private int keyCustomer;
-    private Customer Customer;
     
-    private int keyEmployee;
-    private Employee Employee;        
+    private int keyEmployee;       
     
     private Connection conn;
     private Connect objC;
@@ -39,7 +37,7 @@ public class Order {
 					
 		try {	
 			String query = "INSERT INTO orders (keyorder, orderdate, keycustomer, keyemployee)"
-					+ " values ("+keyOrder+", '"+orderDate+"',"+keyCustomer+", "+keyEmployee+")";
+					+ " values ("+keyOrder+", now(), "+keyCustomer+", "+keyEmployee+")";
 			
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(query);
@@ -47,7 +45,28 @@ public class Order {
 		}catch(Exception e) {						
 		}
 	}
-		
+	
+	//==========================METHODS===========================================
+	public void getData() 
+	{
+		try 
+		{
+			objC = new Connect();
+			conn = objC.getConn();
+			
+			String query = "SELECT keycustomer, keyroute, keyemployee, (SELECT MAX(keyorder) FROM orders) FROM customer JOIN route USING (keyroute) JOIN employee USING(keyemployee) WHERE keycustomer = "+keyCustomer;
+			
+			Statement stmt = conn.createStatement();
+			ResultSet res = stmt.executeQuery(query);
+			
+			if(res.next()) 
+			{
+				keyEmployee = res.getInt("keyemployee");
+				keyOrder =res.getInt("max");
+			}
+		}
+		catch(Exception e) {}
+	}
 		
 	public List<Order> listOrders() {
 		Order objO;
@@ -63,16 +82,11 @@ public class Order {
 			
 			//Convert all registers from query to objects
 			while(res.next()) {
-				Customer objCu = new Customer(); 
-				Employee objEm = new Employee();
-												
-				objCu.getObjCustomer(res.getInt("keycustomer"));
-				
 				objO = new Order();				
 				objO.keyOrder = res.getInt("keyorder");				
 				objO.orderDate = res.getDate("orderdate");
-				objO.Customer = objCu;
-				objO.Employee = objEm;				
+				objO.keyCustomer = res.getInt("keycustomer");
+				objO.keyEmployee = res.getInt("keyemployee");				
 				arrOr.add(objO);
 			}
 			conn.close();
@@ -82,7 +96,6 @@ public class Order {
 		}
 		return arrOr;
 	}
-	
 	
 	//=========================GETTERS AND SETTERS============================================
 	@XmlElement(required=true)		
@@ -110,22 +123,5 @@ public class Order {
 
 	public void setKeyEmployee(int keyEmployee) {
 		this.keyEmployee = keyEmployee;
-	}
-
-	
-	@XmlElement(required=true)
-	public Customer getCustomer() {
-		return Customer;
-	}
-	public void setCustomer(Customer customer) {
-		Customer = customer;
-	}
-	
-	@XmlElement(required=true)
-	public Employee getEmployee() {
-		return Employee;
-	}
-	public void setEmployee(Employee employee) {
-		Employee = employee;
 	}
 }

@@ -30,7 +30,24 @@ public class WSOrder
 		else
 			return null;		
 	}
-		
+	
+	@GET
+	@Path("/getdata/{keycustomer}/{token}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Order getData(@PathParam("keycustomer") int keyCustomer, @PathParam("token") String token)
+	{
+		Log objL = new Log();		
+		if(objL.validateToken(token))
+		{
+			Order obj = new Order();
+			obj.setKeyCustomer(keyCustomer);
+			obj.getData();
+			return obj;
+		}	
+		else
+			return null;	
+	}
+			
 	@GET
 	@Path("/listorders/{token}")
 	@Produces(MediaType.APPLICATION_JSON)

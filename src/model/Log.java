@@ -12,11 +12,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class Log 
 {
-	//private int keyAccess;
-	//private String userName;
 	private String  token;
-	//private Date startDate;
-	//private Date endDate;
 	
 	Connect objC;
 	Connection conn;
@@ -40,7 +36,7 @@ public class Log
 			conn = objC.getConn();
 			
 			String query = "INSERT INTO log (username, token, startdate, enddate)"
-					+ " VALUES('"+userName+"', '"+token+"', now(), now() + interval '30 minutes')";
+					+ " VALUES('"+userName+"', '"+token+"' , now(), now() + interval '30 minutes')";
 			
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(query);

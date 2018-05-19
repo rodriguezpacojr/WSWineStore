@@ -24,6 +24,7 @@ public class Product {
     private String color;
     private String taste;    
     private int stock;
+    private int availables;
     private double salesPrice;    
     
     private int keyTypeProduct;
@@ -38,8 +39,8 @@ public class Product {
 		objC = new Connect();
 		conn = objC.getConn();
 			
-		String query = "INSERT INTO product (name, ml, color, taste, stock, salesprice, keytypeproduct)"
-				+ " values ('"+name+"', "+ml+", '"+color+"', '"+taste+"', "+stock+", "+salesPrice+", "+keyTypeProduct+")";
+		String query = "INSERT INTO product (name, ml, color, taste, stock, salesprice, keytypeproduct, availables)"
+				+ " values ('"+name+"', "+ml+", '"+color+"', '"+taste+"', "+stock+", "+salesPrice+", "+keyTypeProduct+", "+availables+")";
 		try
 		{					
 			Statement stmt = conn.createStatement();
@@ -59,6 +60,20 @@ public class Product {
 				+ "color = '"+color+"', taste = '"+taste+"', stock = "+stock+", "
 				+ "salesprice = "+salesPrice+", keytypeproduct = "+keyTypeProduct+" "								
 				+ "WHERE keyproduct = "+keyProduct;
+		try {						
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+			conn.close();
+		}catch(Exception e) {
+			this.name=query;
+		}
+	}
+	
+	public void updateAvailables() {
+		objC = new Connect();
+		conn = objC.getConn();
+				
+		String query = "UPDATE product SET availables = (SELECT availables from product WHERE keyproduct = "+keyProduct+") + ("+availables+") WHERE keyproduct = "+keyProduct;
 		try {						
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(query);
@@ -103,6 +118,7 @@ public class Product {
 				objPro.stock = res.getInt("stock");
 				objPro.salesPrice = res.getDouble("salesprice");
 				objPro.tp = res.getString("tp");
+				objPro.availables= res.getInt("availables");
 				arrPro.add(objPro);
 			}
 			conn.close();
@@ -191,6 +207,11 @@ public class Product {
 	public String getTp() {
 		return tp;
 	}
+	
+	@XmlElement(required=true)
+	public int getAvailables() {
+		return availables;
+	}
 
 	public void setName(String name) {
 		this.name = name;
@@ -222,7 +243,9 @@ public class Product {
 
 	public void setTp(String tp) {
 		this.tp = tp;
+	}
+
+	public void setAvailables(int availables) {
+		this.availables = availables;
 	}	
-	
-	
 }

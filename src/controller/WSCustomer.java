@@ -60,6 +60,23 @@ public class WSCustomer
 	}
 	
 	@GET
+	@Path("/listcustomersroute/{keyRoute}/{token}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Customer> listCustomerRoute(@PathParam("keyRoute") int keyRoute,@PathParam("token") String token)
+	{			
+		Log objL = new Log();
+		
+		if(objL.validateToken(token))
+		{
+			Customer objE = new Customer();	
+			objE.setKeyRoute(keyRoute);
+			return objE.listCustomersRoute();
+		}
+		else
+			return null;		
+	}
+	
+	@GET
 	@Path("/listcustomers/{token}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Customer> listCustomer(@PathParam("token") String token)

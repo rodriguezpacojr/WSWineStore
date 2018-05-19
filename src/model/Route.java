@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class Route {	
     
 	private int keyRoute;
-    private String destination, employee, lastName;        
+    private String destination, employee, lastName, userName;        
     private int customers;
     private int keyEmployee;
     private Connection conn;
@@ -108,7 +108,12 @@ public class Route {
 		conn = objC.getConn();
 		
 		try {
-			String query = "SELECT r.*, e.name AS employee, e.lastname AS lastname, count(*) FROM route r JOIN employee e USING (keyemployee) JOIN customer USING (keyroute) WHERE keyemployee = "+keyEmployee+" GROUP BY r.keyroute, e.name, e.lastname";
+			String query = "SELECT r.*, e.name AS employee, e.lastname AS lastname, count(*) "
+							+ "FROM route r JOIN employee e USING (keyemployee) "
+										 + "JOIN customer USING (keyroute) "
+										 + "JOIN usr USING (keyuser) "
+							+ "WHERE username = '" + userName + "' "
+							+ "GROUP BY r.keyroute, e.name, e.lastname";
 			Statement stmt = conn.createStatement();
 			ResultSet res = stmt.executeQuery(query);
 			
@@ -130,7 +135,6 @@ public class Route {
 		}
 		return arr;
 	}
-	
 	
 	@XmlElement(required=true)
 	public int getKeyRoute() {
@@ -184,5 +188,14 @@ public class Route {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	
+	@XmlElement(required=true)
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 }

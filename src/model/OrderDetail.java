@@ -21,10 +21,8 @@ public class OrderDetail
     private int keyOrderDetail;
     
     private int keyOrder;
-    private Order Order;
     
     private int keyProduct;
-    private Product Product;
     
     private float quantity;
     
@@ -40,8 +38,7 @@ public class OrderDetail
 					
 		try
 		{	
-			String query = "INSERT INTO order_detail (keyorder, keyproduct, quantity)"
-					+ " values ("+keyOrder+", "+keyProduct+", "+quantity+")";
+			String query = "INSERT INTO order_detail(keyorder, keyproduct, quantity) values ("+keyOrder+", "+keyProduct+", "+quantity+")";
 			
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(query);
@@ -93,7 +90,6 @@ public class OrderDetail
 				objHis = new OrderDetail();				
 				objHis.keyOrderDetail = res.getInt("keyorderdetail");								
 				objHis.keyOrder = res.getInt("keyorder");				
-				objHis.Product = objP;
 				objHis.quantity = res.getInt("quantity");
 				arrHis.add(objHis);
 			}
@@ -110,6 +106,15 @@ public class OrderDetail
 	//=========================GETTERS AND SETTERS============================================
 
 	@XmlElement(required=true)
+	public float getKeyOrderDetail() {
+		return keyOrderDetail;
+	}
+
+	public void setKeyOrderDetail(int keyOrderDetail) {
+		this.keyOrderDetail = keyOrderDetail;
+	}
+	
+	@XmlElement(required=true)
 	public float getQuantity() {
 		return quantity;
 	}
@@ -118,22 +123,21 @@ public class OrderDetail
 		this.quantity = quantity;
 	}
 
-	
-		
-
 	@XmlElement(required=true)
-	public Order getOrder() {
-		return Order;
-	}
-	public void setOrder(Order order) {
-		Order = order;
+	public int getKeyOrder() {
+		return keyOrder;
 	}
 
-	@XmlElement(required=true)
-	public Product getProduct() {
-		return Product;
+	public void setKeyOrder(int keyOrder) {
+		this.keyOrder = keyOrder;
 	}
-	public void setProduct(Product product) {
-		Product = product;
+
+	@XmlElement(required=true)
+	public int getKeyProduct() {
+		return keyProduct;
+	}
+
+	public void setKeyProduct(int keyProduct) {
+		this.keyProduct = keyProduct;
 	}
 }

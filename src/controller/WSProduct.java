@@ -45,6 +45,18 @@ public class WSProduct
 		}
 	}
 	
+	@PUT
+	@Path("/updateavailables/{token}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void updateAvailables(Product objPro, @PathParam("token") String token) 
+	{
+		Log objL = new Log();
+		if(objL.validateToken(token))
+		{
+			objPro.updateAvailables();
+		}
+	}
+	
 	@DELETE
 	@Path("/deleteproduct/{keyProduct}/{token}")
 	public void deleteProduct(@PathParam("keyProduct") int keyProduct, @PathParam("token") String token) 

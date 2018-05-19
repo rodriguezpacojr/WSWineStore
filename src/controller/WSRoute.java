@@ -59,20 +59,19 @@ public class WSRoute
 	}
 	
 	@GET
-	@Path("/getroutes/{keyEmployee}/{token}")
+	@Path("/getroutes/{userName}/{token}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Route> getRoutes(@PathParam("keyEmployee") int keyEmployee, @PathParam("token") String token) 
+	public List<Route> getRoutes(@PathParam("userName") String userName, @PathParam("token") String token) 
 	{
 		Log objL = new Log();
 		if(objL.validateToken(token))
 		{
 			Route obj = new Route();
-			obj.setKeyEmployee(keyEmployee);		
+			obj.setUserName(userName);		
 			return obj.listRoutesEmployee();
 		}else		
 			return null;
 	}
-	
 	
 	@GET
 	@Path("/listroutes/{token}")

@@ -120,6 +120,35 @@ public class Customer {
 		return arrCus;		
 	}	
 	
+	public List<Customer> listCustomersRoute() {				
+		Customer objCu = new  Customer();;
+		ArrayList<Customer> arrCus = new ArrayList<Customer>();		
+										
+		try {
+			objC = new Connect();
+			conn = objC.getConn();
+			String query = "SELECT keycustomer, name, lastname, latitude, longitude FROM customer WHERE keyroute = " + keyRoute;			
+			Statement stmt = conn.createStatement();
+			ResultSet res = stmt.executeQuery(query);
+				
+			//Convert all registers from query to objects
+			while(res.next()) {
+				objCu = new Customer();
+				objCu.keyCustomer = res.getInt("keycustomer");
+				objCu.name = res.getString("name");
+				objCu.lastName = res.getString("lastname");				
+				objCu.latitude = res.getDouble("latitude");
+				objCu.longitude = res.getDouble("longitude");
+				arrCus.add(objCu);
+			}
+			conn.close();
+		}
+		catch(Exception e) {	
+			
+		}
+		return arrCus;		
+	}
+	
 	public void getObjCustomer(int keycustomer) {
 		try {
 			objC = new Connect();

@@ -79,7 +79,6 @@ public class Employee {
 		try 
 		{
 			String query = "DELETE FROM employee WHERE keyemployee = "+keyEmployee;
-			
 			Statement stmt = conn.createStatement();
 			stmt.executeQuery(query);
 			conn.close();
