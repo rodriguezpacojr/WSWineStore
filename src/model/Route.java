@@ -68,6 +68,27 @@ public class Route {
 			conn.close();
 		} catch (Exception e) {}
 	}
+	
+	public void getRoute() 
+	{
+		try 
+		{
+			objC = new Connect();
+			conn = objC.getConn();
+			
+			String query = "SELECT * FROM route WHERE keyroute = "+keyRoute;
+			
+			Statement stmt = conn.createStatement();
+			ResultSet res = stmt.executeQuery(query);
+			
+			if(res.next()) 
+			{
+				destination = res.getString("name");
+				keyEmployee = res.getInt("keyemployee");
+			}
+		}
+		catch(Exception e) {}
+	}
 		
 	public List<Route> listRoutes() {
 		Route obj = new Route();

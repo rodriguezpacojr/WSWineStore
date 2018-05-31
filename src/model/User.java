@@ -11,7 +11,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-//Annotations for include a root in the out of WS
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name="user")
 
@@ -21,6 +20,7 @@ public class User
 	private String userName;
 	private String password;
 	private String token;
+	private String role;
 	
     private Connection conn;
     private Connect objC;
@@ -34,8 +34,10 @@ public class User
 			objC = new Connect();
 			conn = objC.getConn();
 			
+			//String query = "SELECT * FROM usr WHERE username = '"+userName+"' AND "
+				//	+ "password = md5('"+password+"')";
 			String query = "SELECT * FROM usr WHERE username = '"+userName+"' AND "
-					+ "password = md5('"+password+"')";
+						+ "password = '"+password+"'";
 			
 			Statement stmt = conn.createStatement();
 			ResultSet res = stmt.executeQuery(query);
@@ -45,6 +47,7 @@ public class User
 				Log objB = new Log();
 				objB.insertLog(userName);
 				token = objB.getToken();
+				role = res.getString("role");
 			}
 			else 
 			{
@@ -89,7 +92,7 @@ public class User
 		{
 			objC = new Connect();
 			conn = objC.getConn();
-			String query = "select keyuser,username from usr where keyuser not in (select keyuser from employee)";			
+			String query = "SELECT keyuser,username FROM usr WHERE role != 'admin' AND keyuser NOT IN (SELECT keyuser FROM employee WHERE keyuser IS NOT NULL)";			
 			Statement stmt = conn.createStatement();
 			ResultSet res = stmt.executeQuery(query);
 				
@@ -125,7 +128,20 @@ public class User
 	public String getUserName() {
 		return userName;
 	}
-	
+		
+	@XmlElement(required = true)
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	public void setKeyUser(int keyUser) {
 		this.keyUser = keyUser;
 	}

@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 
 import model.Route;
 import model.Log;
+import model.Product;
 
 @Path("/route")
 public class WSRoute 
@@ -71,6 +72,23 @@ public class WSRoute
 			return obj.listRoutesEmployee();
 		}else		
 			return null;
+	}
+	
+	@GET
+	@Path("/getroute/{keyRoute}/{token}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Route route(@PathParam("keyRoute") int keyRoute, @PathParam("token") String token)
+	{
+		Log objL = new Log();		
+		if(objL.validateToken(token))
+		{
+			Route obj = new Route();
+			obj.setKeyRoute(keyRoute);
+			obj.getRoute();
+			return obj;
+		}
+		else
+			return null;	
 	}
 	
 	@GET

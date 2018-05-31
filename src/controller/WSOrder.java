@@ -49,17 +49,32 @@ public class WSOrder
 	}
 			
 	@GET
-	@Path("/listorders/{token}")
+	@Path("/listordersu/{token}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Order> listOrder(@PathParam("token") String token)
+	public List<Order> listOrderU(@PathParam("token") String token)
 	{
 		Log objL = new Log();		
 		if(objL.validateToken(token))
 		{
 			Order objHis = new Order();
-			return objHis.listOrders();
+			return objHis.listOrdersU();
 		}
 		else
 			return null;		
-	}	
+	}
+	
+	@GET
+	@Path("/listordersd/{token}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Order> listOrderD(@PathParam("token") String token)
+	{
+		Log objL = new Log();		
+		if(objL.validateToken(token))
+		{
+			Order objHis = new Order();
+			return objHis.listOrdersD();
+		}
+		else
+			return null;		
+	}
 }

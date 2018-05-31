@@ -44,5 +44,21 @@ public class WSOrderDetail
 		}
 		else
 			return null;		
-	}	
+	}
+	
+	@GET
+	@Path("/orderdetail/{keyOrder}/{token}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<OrderDetail> OrderDetail(@PathParam("keyOrder") int keyOrder, @PathParam("token") String token)
+	{
+		Log objL = new Log();		
+		if(objL.validateToken(token))
+		{
+			OrderDetail objOD = new OrderDetail();
+			objOD.setKeyOrder(keyOrder);
+			return objOD.orderDetail();
+		}
+		else
+			return null;		
+	}
 }

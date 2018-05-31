@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 
 import model.Product;
 import model.Log;
+import model.Order;
 
 @Path("/product")
 public class WSProduct 
@@ -68,6 +69,23 @@ public class WSProduct
 			objPro.setKeyProduct(keyProduct);		
 			objPro.deleteProduct();
 		}		
+	}
+	
+	@GET
+	@Path("/getproduct/{keyProduct}/{token}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Product product(@PathParam("keyProduct") int keyProduct, @PathParam("token") String token)
+	{
+		Log objL = new Log();		
+		if(objL.validateToken(token))
+		{
+			Product obj = new Product();
+			obj.setKeyProduct(keyProduct);
+			obj.getProduct();
+			return obj;
+		}
+		else
+			return null;	
 	}
 	
 	@GET

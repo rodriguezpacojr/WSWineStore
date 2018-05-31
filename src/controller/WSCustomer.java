@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 
 import model.Customer;
 import model.Log;
+import model.Route;
 
 @Path("/customer")
 public class WSCustomer 
@@ -57,6 +58,23 @@ public class WSCustomer
 			obj.setKeyCustomer(keyCustomer);		
 			obj.deleteCustomer();
 		}
+	}
+	
+	@GET
+	@Path("/getcustomer/{keyCustomer}/{token}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Customer customer(@PathParam("keyCustomer") int keyCustomer, @PathParam("token") String token)
+	{
+		Log objL = new Log();		
+		if(objL.validateToken(token))
+		{
+			Customer obj = new Customer();
+			obj.setKeyCustomer(keyCustomer);
+			obj.getCustomer();
+			return obj;
+		}
+		else
+			return null;	
 	}
 	
 	@GET

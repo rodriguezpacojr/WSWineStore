@@ -40,7 +40,7 @@ public class Employee {
 		objC = new Connect();
 		conn = objC.getConn();
 			
-		String query = "INSERT INTO employee (name, lastname, borndate, email, phone, rfc, entryDate, keyuser)"
+		String query = "INSERT INTO employee (name, lastname, borndate, email, phone, rfc, photo, entryDate, keyuser)"
 				+ " values ('"+name+"', '"+lastName+"', '"+bornDate+"', '"+email+"','"+phone+"','"+RFC+"','"+photo+"' ,'"+entryDate+"',"+keyUser+")";
 		try
 		{					
@@ -85,6 +85,33 @@ public class Employee {
 		} catch (Exception e) {}
 	}
 		
+	public void getEmployee() 
+	{
+		try 
+		{
+			objC = new Connect();
+			conn = objC.getConn();
+			
+			String query = "SELECT * FROM employee WHERE keyemployee = "+keyEmployee;
+			
+			Statement stmt = conn.createStatement();
+			ResultSet res = stmt.executeQuery(query);
+			
+			if(res.next()) 
+			{
+				name = res.getString("name");
+				lastName = res.getString("lastName");
+				bornDate = res.getDate("bornDate");
+				email = res.getString("email");
+				phone = res.getString("phone");
+				RFC = res.getString("RFC");
+				entryDate = res.getDate("entryDate");    			    			    			    
+			    keyUser= res.getInt("keyUser");
+			}
+		}
+		catch(Exception e) {}
+	}
+	
 	public List<Employee> listEmployees()
 	{				
 		Employee obj = new  Employee();

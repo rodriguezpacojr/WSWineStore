@@ -11,6 +11,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import model.Customer;
 import model.Employee;
 import model.Log;
 
@@ -57,6 +58,23 @@ public class WSEmployee
 			objE.setKeyEmployee(keyEmployee);		
 			objE.deleteEmployee();
 		}
+	}
+	
+	@GET
+	@Path("/getemployee/{keyEmployee}/{token}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Employee employee(@PathParam("keyEmployee") int keyEmployee, @PathParam("token") String token)
+	{
+		Log objL = new Log();		
+		if(objL.validateToken(token))
+		{
+			Employee obj = new Employee();
+			obj.setKeyEmployee(keyEmployee);
+			obj.getEmployee();
+			return obj;
+		}
+		else
+			return null;	
 	}
 	
 	@GET

@@ -82,6 +82,35 @@ public class Customer {
 			conn.close();
 		} catch (Exception e) {}
 	}
+	
+	public void getCustomer() 
+	{
+		try 
+		{
+			objC = new Connect();
+			conn = objC.getConn();
+			
+			String query = "SELECT * FROM customer WHERE keycustomer = "+keyCustomer;
+			
+			Statement stmt = conn.createStatement();
+			ResultSet res = stmt.executeQuery(query);
+			
+			if(res.next()) 
+			{
+				name = res.getString("name");
+				lastName = res.getString("lastName");
+				bornDate = res.getDate("bornDate");
+				email = res.getString("email");
+				phone = res.getString("phone");
+				RFC = res.getString("RFC");
+				entryDate = res.getDate("entryDate");    			    			    			    
+			    latitude = res.getInt("keytypeproduct");
+			    longitude = res.getDouble("longitude");
+			    keyRoute = res.getInt("keyRoute");
+			}
+		}
+		catch(Exception e) {}
+	}
 		
 	public List<Customer> listCustomers() {				
 		Customer objCu = new  Customer();;

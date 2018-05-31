@@ -94,6 +94,33 @@ public class Product {
 			conn.close();
 		} catch (Exception e) {}
 	}
+	
+	public void getProduct() 
+	{
+		try 
+		{
+			objC = new Connect();
+			conn = objC.getConn();
+			
+			String query = "SELECT * FROM product WHERE keyproduct = "+keyProduct;
+			
+			Statement stmt = conn.createStatement();
+			ResultSet res = stmt.executeQuery(query);
+			
+			if(res.next()) 
+			{
+				name = res.getString("name");
+				ml = res.getDouble("ml");
+				color = res.getString("color");
+			    taste = res.getString("taste");    
+			    stock = res.getInt("stock");
+			    availables = res.getInt("availables");
+			    salesPrice = res.getDouble("salesprice");
+			    keyTypeProduct = res.getInt("keytypeproduct");
+			}
+		}
+		catch(Exception e) {}
+	}
 		
 	public List<Product> listProducts() {
 		Product objPro;
@@ -119,12 +146,12 @@ public class Product {
 				objPro.salesPrice = res.getDouble("salesprice");
 				objPro.tp = res.getString("tp");
 				objPro.availables= res.getInt("availables");
+				objPro.keyTypeProduct = res.getInt("keytypeproduct");
 				arrPro.add(objPro);
 			}
 			conn.close();
 		}
 		catch(Exception e) {
-
 		}
 		return arrPro;
 	}
