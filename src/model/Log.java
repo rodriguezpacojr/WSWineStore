@@ -44,7 +44,7 @@ public class Log
 		}catch(Exception e) {}
 	}
 	
-	public boolean validateToken(String token) 
+	public boolean validateToken(String token)
 	{
 		boolean flag = false;		
 		

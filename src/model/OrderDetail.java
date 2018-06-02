@@ -20,8 +20,13 @@ public class OrderDetail
 {	
     private int keyOrderDetail;    
     private int keyOrder;   
-    private int keyProduct;
+    private int keyProduct; 
+    private int art;
+    private double total;
+    private double salesPrice;    
     private String nameProduct;
+    private String orderDate;
+    private String deliveryDate;
         
     private int keyCustomer;
     private String nameCustomer;
@@ -29,7 +34,7 @@ public class OrderDetail
     private int keyEmployee;
     private String nameEmployee;
     
-    private float quantity;
+    private int quantity;
     
     private Connection conn;
     private Connect objC;
@@ -70,6 +75,27 @@ public class OrderDetail
 		{		
 		}
 	}
+	
+	public void getT() 
+	{
+		try 
+		{
+			objC = new Connect();
+			conn = objC.getConn();
+			
+			String query = "select sum(quantity) as art, sum(salesprice*quantity) as total from order_detail join product using (keyproduct) where keyorder = "+keyOrder;
+			
+			Statement stmt = conn.createStatement();
+			ResultSet res = stmt.executeQuery(query);
+			
+			if(res.next()) 
+			{
+				art = res.getInt("art");
+				total = res.getInt("total");
+			}
+		}
+		catch(Exception e) {}
+	}
 		
 	public List<OrderDetail> listOrderDetail()
 	{
@@ -90,8 +116,8 @@ public class OrderDetail
 			{				
 				objHis = new OrderDetail();				
 				objHis.keyOrderDetail = res.getInt("keyorderdetail");					
-				objHis.keyOrder = res.getInt("keyorder");
-				objHis.keyProduct = res.getInt("keyproduct");
+				objHis.keyOrder = res.getInt("keyorder");				
+				objHis.keyProduct = res.getInt("keyproduct");				
 				objHis.nameProduct = res.getString("namep");
 				objHis.keyCustomer = res.getInt("keycustomer");
 				objHis.nameCustomer = res.getString("namec") +" " + res.getString("lastnamec");
@@ -119,7 +145,7 @@ public class OrderDetail
 		
 		try
 		{
-			String query = "SELECT od.*, c.name as namec, c.lastname as lastnamec, e.name as namee, e.lastname as lastnamee, p.name as namep FROM order_detail od JOIN orders o USING(keyorder) JOIN customer c USING(keycustomer) JOIN employee e USING(keyemployee) JOIN product p USING(keyproduct) WHERE keyorder = " + keyOrder;	
+			String query = "SELECT o.*, od.*,p.salesprice, c.name as namec, c.lastname as lastnamec, e.name as namee, e.lastname as lastnamee, p.name as namep FROM order_detail od JOIN orders o USING(keyorder) JOIN customer c USING(keycustomer) JOIN employee e USING(keyemployee) JOIN product p USING(keyproduct) WHERE keyorder = " + keyOrder;	
 			Statement stmt = conn.createStatement();
 			ResultSet res = stmt.executeQuery(query);
 			
@@ -129,6 +155,9 @@ public class OrderDetail
 				objHis = new OrderDetail();
 				objHis.keyOrder = res.getInt("keyorder");
 				objHis.keyProduct = res.getInt("keyproduct");
+				objHis.salesPrice = res.getDouble("salesprice");
+				objHis.orderDate = res.getString("orderdate");
+				objHis.deliveryDate = res.getString("deliverydate");
 				objHis.nameProduct = res.getString("namep");
 				objHis.nameCustomer = res.getString("namec") +" " + res.getString("lastnamec");
 				objHis.nameEmployee = res.getString("namee") +" " + res.getString("lastnamee");
@@ -142,8 +171,7 @@ public class OrderDetail
 
 		}
 		return arrHis;
-	}
-	
+	}	
 	
 	//=========================GETTERS AND SETTERS============================================
 
@@ -157,11 +185,11 @@ public class OrderDetail
 	}
 	
 	@XmlElement(required=true)
-	public float getQuantity() {
+	public int getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(float quantity) {
+	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 
@@ -227,4 +255,50 @@ public class OrderDetail
 	public void setNameEmployee(String nameEmployee) {
 		this.nameEmployee = nameEmployee;
 	}
+
+	@XmlElement(required=true)
+	public String getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(String orderDate) {
+		this.orderDate = orderDate;
+	}
+
+	@XmlElement(required=true)
+	public String getDeliveryDate() {
+		return deliveryDate;
+	}
+
+	public void setDeliveryDate(String deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+
+	@XmlElement(required=true)
+	public double getSalesPrice() {
+		return salesPrice;
+	}
+
+	public void setSalesPrice(double salesPrice) {
+		this.salesPrice = salesPrice;
+	}
+
+	@XmlElement(required=true)
+	public int getArt() {
+		return art;
+	}
+
+	public void setArt(int art) {
+		this.art = art;
+	}
+
+	@XmlElement(required=true)
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+	
 }

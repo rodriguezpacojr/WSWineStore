@@ -21,12 +21,15 @@ public class Order {
     
 	private int keyOrder;
     private String orderDate;
+    private String deliveryDate;
             
     private int keyCustomer;
     private String nameCustomer;
     
     private int keyEmployee;
-    private String nameEmployee;    
+    private String nameEmployee;  
+    
+    private String userName;
     
     private Connection conn;
     private Connect objC;
@@ -38,8 +41,8 @@ public class Order {
 		conn = objC.getConn();
 					
 		try {	
-			String query = "INSERT INTO orders (keyorder, orderdate, keycustomer, keyemployee)"
-					+ " values ("+keyOrder+", now(), "+keyCustomer+", "+keyEmployee+")";
+			String query = "INSERT INTO orders (keyorder, orderdate, status, keycustomer, keyemployee)"
+					+ " values ("+keyOrder+", now(), 'f', "+keyCustomer+", "+keyEmployee+")";
 			
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(query);
@@ -68,6 +71,19 @@ public class Order {
 			}
 		}
 		catch(Exception e) {}
+	}	
+	
+	public void updateStatus() {
+		objC = new Connect();
+		conn = objC.getConn();
+				
+		String query = "UPDATE orders SET status = 't', deliverydate = now() WHERE keyorder = "+keyOrder;
+		try {						
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+			conn.close();
+		}catch(Exception e) {			
+		}
 	}
 
 	public List<Order> listOrdersU() {
@@ -101,6 +117,35 @@ public class Order {
 		return arrOr;
 	}
 	
+	public List<Order> ordersEmployee() {
+		Order objO;
+		ArrayList<Order> arrOr = new ArrayList<Order>();
+
+		objC = new Connect();
+		conn = objC.getConn();
+		
+		try {
+			String query = "SELECT o.*, c.name as namec, c.lastname as lastnamec FROM orders o JOIN customer c USING(keycustomer) JOIN employee e USING(keyemployee) JOIN usr u USING(keyuser) WHERE u.username = '" + userName + "'";			
+			Statement stmt = conn.createStatement();
+			ResultSet res = stmt.executeQuery(query);
+			
+			//Convert all registers from query to objects
+			while(res.next()) {
+				objO = new Order();				
+				objO.keyOrder = res.getInt("keyorder");						
+				objO.orderDate = res.getString("orderdate");
+				objO.keyCustomer = res.getInt("keycustomer");				
+				objO.nameCustomer = res.getString("namec") +" " + res.getString("lastnamec");			
+				arrOr.add(objO);
+			}
+			conn.close();
+		}
+		catch(Exception e) {
+
+		}
+		return arrOr;
+	}
+	
 	public List<Order> listOrdersD() {
 		Order objO;
 		ArrayList<Order> arrOr = new ArrayList<Order>();
@@ -117,7 +162,7 @@ public class Order {
 			while(res.next()) {
 				objO = new Order();				
 				objO.keyOrder = res.getInt("keyorder");						
-				objO.orderDate = res.getString("orderdate");
+				objO.orderDate = res.getString("deliverydate");
 				objO.keyCustomer = res.getInt("keycustomer");				
 				objO.nameCustomer = res.getString("namec") +" " + res.getString("lastnamec");
 				objO.keyEmployee = res.getInt("keyemployee");
@@ -185,6 +230,24 @@ public class Order {
 
 	public void setOrderDate(String orderDate) {
 		this.orderDate = orderDate;
+	}
+
+	@XmlElement(required=true)
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	@XmlElement(required=true)
+	public String getDeliveryDate() {
+		return deliveryDate;
+	}
+
+	public void setDeliveryDate(String deliveryDate) {
+		this.deliveryDate = deliveryDate;
 	}
 	
 	

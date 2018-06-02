@@ -69,6 +69,20 @@ public class Product {
 		}
 	}
 	
+	public void updateStock() {
+		objC = new Connect();
+		conn = objC.getConn();
+				
+		String query = "UPDATE product SET stock = (SELECT stock from product WHERE keyproduct = "+keyProduct+") - "+stock+" WHERE keyproduct = "+keyProduct;
+		try {						
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+			conn.close();
+		}catch(Exception e) {
+			this.name=query;
+		}
+	}
+	
 	public void updateAvailables() {
 		objC = new Connect();
 		conn = objC.getConn();

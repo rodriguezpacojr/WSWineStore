@@ -75,7 +75,7 @@ public class WSCustomer
 		}
 		else
 			return null;	
-	}
+	}		
 	
 	@GET
 	@Path("/listcustomersroute/{keyRoute}/{token}")
@@ -92,6 +92,21 @@ public class WSCustomer
 		}
 		else
 			return null;		
+	}
+	
+	@GET
+	@Path("/listcustomersemployee/{userName}/{token}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Customer> getC(@PathParam("userName") String userName, @PathParam("token") String token) 
+	{
+		Log objL = new Log();
+		if(objL.validateToken(token))
+		{
+			Customer obj = new Customer();
+			obj.setUserName(userName);		
+			return obj.listCustomersEmployee();
+		}else		
+			return null;
 	}
 	
 	@GET

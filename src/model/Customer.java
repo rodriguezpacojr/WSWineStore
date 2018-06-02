@@ -29,6 +29,8 @@ public class Customer {
     private Date entryDate;
     private double latitude;
     private double longitude;
+    
+    private String userName;
   
     private int keyRoute;
     private String Route;                
@@ -136,6 +138,41 @@ public class Customer {
 				objCu.entryDate = res.getDate("entrydate");
 				objCu.latitude = res.getDouble("latitude");
 				objCu.longitude = res.getDouble("longitude");
+				objCu.keyRoute = res.getInt("keyRoute");
+				objCu.Route = res.getString("route");
+				
+				arrCus.add(objCu);
+			}
+			conn.close();
+		}
+		catch(Exception e) {	
+			
+		}
+		return arrCus;		
+	}
+	
+	public List<Customer> listCustomersEmployee() {				
+		Customer objCu = new  Customer();;
+		ArrayList<Customer> arrCus = new ArrayList<Customer>();		
+										
+		try {
+			objC = new Connect();
+			conn = objC.getConn();
+			String query = "SELECT c.*, r.keyroute, r.name as route FROM customer c JOIN route r USING(keyroute) JOIN employee e USING(keyemployee) JOIN usr u USING(keyuser) WHERE username = '" + userName +"'";			
+			Statement stmt = conn.createStatement();
+			ResultSet res = stmt.executeQuery(query);
+				
+			//Convert all registers from query to objects
+			while(res.next()) {
+				objCu = new Customer();
+				objCu.keyCustomer = res.getInt("keycustomer");
+				objCu.name = res.getString("name");
+				objCu.lastName = res.getString("lastname");				
+				objCu.bornDate = res.getDate("borndate");
+				objCu.email = res.getString("email");
+				objCu.phone = res.getString("phone");
+				objCu.RFC = res.getString("rfc");
+				objCu.entryDate = res.getDate("entrydate");
 				objCu.keyRoute = res.getInt("keyRoute");
 				objCu.Route = res.getString("route");
 				
@@ -326,4 +363,15 @@ public class Customer {
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
+
+	@XmlElement(required = true)
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
+	
 }

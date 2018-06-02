@@ -13,7 +13,26 @@ import model.User;
 
 @Path("/user")
 public class WSUser 
-{
+{		
+	
+	@GET
+	@Path("/count/{table}/{token}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public User count(@PathParam("table") String table, @PathParam("token") String token)
+	{
+		Log objL = new Log();
+		
+		if(objL.validateToken(token))
+		{
+			User objU = new User();
+			objU.setTable(table);
+			objU.count();
+			return objU;
+		}
+		else
+			return null;
+	}
+	
 	@GET
 	@Path("/validate/{username}/{password}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -24,7 +43,7 @@ public class WSUser
 		objU.setPassword(password);
 		objU.validateUser();
 		return objU;
-	}	
+	}
 	
 	@GET
 	@Path("/listusers/{token}")

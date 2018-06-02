@@ -16,26 +16,49 @@ import java.util.List;
 
 public class User
 {	 
-	private int keyUser;
+	private int keyUser, count;
 	private String userName;
 	private String password;
 	private String token;
 	private String role;
+	private String table;	
 	
     private Connection conn;
     private Connect objC;
-
-    
-    	//==========================METHODS===========================================
+	
+	public void count() 
+	{
+		try 
+		{
+			objC = new Connect();
+			conn = objC.getConn();
+	
+			String query = "SELECT count(*) FROM " + table;
+			
+			Statement stmt = conn.createStatement();
+			ResultSet res = stmt.executeQuery(query);
+			
+			if(res.next()) 
+			{
+				
+				count = res.getInt("count");
+			}
+			else 
+			{
+				count = 0;
+			}
+		}
+		catch(Exception e) {}
+	}
+	
+	//==========================METHODS===========================================
 	public void validateUser() 
 	{
 		try 
 		{
 			objC = new Connect();
 			conn = objC.getConn();
-			
-			//String query = "SELECT * FROM usr WHERE username = '"+userName+"' AND "
-				//	+ "password = md5('"+password+"')";
+						
 			String query = "SELECT * FROM usr WHERE username = '"+userName+"' AND "
 						+ "password = '"+password+"'";
 			
@@ -132,6 +155,24 @@ public class User
 	@XmlElement(required = true)
 	public String getRole() {
 		return role;
+	}		
+
+	@XmlElement(required = true)
+	public String getTable() {
+		return table;
+	}
+		
+	@XmlElement(required = true)
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public void setTable(String table) {
+		this.table = table;
 	}
 
 	public void setRole(String role) {

@@ -44,6 +44,18 @@ public class WSProduct
 		{
 			objPro.updateProduct();
 		}
+	}	
+	
+	@PUT
+	@Path("/updatestock/{token}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void updateStock(Product objPro, @PathParam("token") String token) 
+	{
+		Log objL = new Log();
+		if(objL.validateToken(token))
+		{
+			objPro.updateStock();
+		}
 	}
 	
 	@PUT

@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 
 import model.OrderDetail;
 import model.Log;
+import model.Order;
 
 @Path("/orderdetail")
 public class WSOrderDetail 
@@ -31,6 +32,23 @@ public class WSOrderDetail
 			return null;		
 	}
 		
+	@GET
+	@Path("/gettotal/{keyOrder}/{token}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public OrderDetail getTotal(@PathParam("keyOrder") int keyOrder, @PathParam("token") String token)
+	{
+		Log objL = new Log();		
+		if(objL.validateToken(token))
+		{
+			OrderDetail obj = new OrderDetail();
+			obj.setKeyOrder(keyOrder);
+			obj.getT();
+			return obj;
+		}	
+		else
+			return null;	
+	}
+	
 	@GET
 	@Path("/listorderdetails/{token}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -60,5 +78,5 @@ public class WSOrderDetail
 		}
 		else
 			return null;		
-	}
+	}	
 }
